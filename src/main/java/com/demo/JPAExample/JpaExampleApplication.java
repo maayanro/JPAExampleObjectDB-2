@@ -1,8 +1,5 @@
 package com.demo.JPAExample;
 
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
-import org.springframework.context.annotation.Bean;
 import javax.persistence.*;
 import java.sql.Date;
 import java.time.LocalDate;
@@ -10,16 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class JpaExampleApplication {
+public class JpaExampleApplication  {
 
 	public static void main(String[] args) {
-
-		SpringApplication.run(JpaExampleApplication.class, args);
-	}
-
-	@Bean
-	public CommandLineRunner demo() {
-		return args -> {
 			List<Person> persons = new ArrayList<>();
 			Person p1 = new Person("Maayan", Date.valueOf(LocalDate.of(1988,8,10)), Person.Gender.FEMALE);
 			Person p2 = new Person("Paz", Date.valueOf(LocalDate.of(1988,8,10)), Person.Gender.FEMALE);
@@ -48,10 +38,9 @@ public class JpaExampleApplication {
 
 			em.close();
 			emf.close();
-		};
 	}
 
-	private void showMenu(EntityManager em, List<Person> persons) {
+	private static void showMenu(EntityManager em, List<Person> persons) {
 
 		System.out.println("--JPA ObjectDB Menu Exercise--");
 		System.out.println("1. insert persons");
@@ -104,7 +93,7 @@ public class JpaExampleApplication {
 		}
 	}
 
-	private void insertPersons(EntityManager em, List<Person> persons) {
+	private static void insertPersons(EntityManager em, List<Person> persons) {
 
 		em.getTransaction().begin();
 		for(Person p : persons) {
@@ -113,7 +102,7 @@ public class JpaExampleApplication {
 		em.getTransaction().commit();
 	}
 
-	private void findAllPersons(EntityManager em) {
+	private static void findAllPersons(EntityManager em) {
 
 		TypedQuery<Person> q = em.createQuery("Select p from Person p", Person.class);
 		List<Person> res = q.getResultList();
@@ -122,7 +111,7 @@ public class JpaExampleApplication {
 		}
 	}
 
-	private Person findById(EntityManager em, long id) {
+	private static Person findById(EntityManager em, long id) {
 		Person person;
 		person = em.find(Person.class, id);
 		System.out.println(person);
@@ -130,7 +119,7 @@ public class JpaExampleApplication {
 		return person;
 	}
 
-	public List<Person> findByName(EntityManager em, String name) {
+	private static List<Person> findByName(EntityManager em, String name) {
 		List<Person> persons;
 		Query q = em.createQuery("Select p from Person p where p.name=:name");
 		q.setParameter("name", name);
@@ -141,7 +130,7 @@ public class JpaExampleApplication {
 		return persons;
 	}
 
-	public List<Person> findByBirthDate(EntityManager em, Date date) {
+	private static List<Person> findByBirthDate(EntityManager em, Date date) {
 		List<Person> persons;
 		Query q4 = em.createQuery("Select p from Person p where p.birthDate=:date");
 		q4.setParameter("date", date);
@@ -153,7 +142,7 @@ public class JpaExampleApplication {
 		return persons;
 	}
 
-	public List<Person> findByMonth(EntityManager em, int month) {
+	private static List<Person> findByMonth(EntityManager em, int month) {
 		List<Person> persons;
 		Query q = em.createQuery("Select p from Person p where MONTH(p.birthDate)=:month");
 		q.setParameter("month", month);
@@ -165,7 +154,7 @@ public class JpaExampleApplication {
 		return persons;
 	}
 
-	public void setNameById(EntityManager em, Long id, String newName) {
+	private static void setNameById(EntityManager em, Long id, String newName) {
 		Person foundP = em.find(Person.class, id);
 		if(foundP != null) {
 			foundP.setName(newName);
@@ -173,7 +162,7 @@ public class JpaExampleApplication {
 		}
 	}
 
-	public List<Person> findAllSingleByGender(EntityManager em, Person.Gender gender) {
+	private static List<Person> findAllSingleByGender(EntityManager em, Person.Gender gender) {
 		List<Person> persons;
 		Query q = em.createQuery("Select p from Person p where p.spouse is null and gender=:gender");
 		q.setParameter("gender", gender);
@@ -185,7 +174,7 @@ public class JpaExampleApplication {
 		return persons;
 	}
 
-	public List<Person> findAllParents(EntityManager em) {
+	private static List<Person> findAllParents(EntityManager em) {
 		List<Person> persons;
 		Query q = em.createQuery("Select p from Person p where p.kids is not empty");
 		persons = q.getResultList();
