@@ -5,7 +5,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.sql.Date;
-import java.util.List;
 
 @Entity
 public class Person {
@@ -17,8 +16,6 @@ public class Person {
     private String name;
     private Date birthDate;
     private Gender gender;
-    private Person spouse;
-    private List<Person> kids;
 
     protected Person() {
     }
@@ -62,22 +59,6 @@ public class Person {
         this.gender = gender;
     }
 
-    public Person getSpouse() {
-        return spouse;
-    }
-
-    public void setSpouse(Person spouse) {
-        this.spouse = spouse;
-    }
-
-    public List<Person> getKids() {
-        return kids;
-    }
-
-    public void setKids(List<Person> kids) {
-        this.kids = kids;
-    }
-
     @Override
     public String toString() {
         return "Person{" +
@@ -85,8 +66,6 @@ public class Person {
                 ", name='" + name + '\'' +
                 ", birthDate=" + birthDate +
                 ", gender=" + gender +
-                ", spouse=" + spouse +
-                ", kids=" + kids +
                 '}';
     }
 }

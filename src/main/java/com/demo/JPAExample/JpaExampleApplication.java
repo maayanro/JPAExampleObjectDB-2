@@ -17,14 +17,6 @@ public class JpaExampleApplication  {
 			Person p4 = new Person("Adam", Date.valueOf(LocalDate.of(2020,2,8)), Person.Gender.MALE);
 			Person p5 = new Person("Aviv", Date.valueOf(LocalDate.of(2020,10,9)), Person.Gender.MALE);
 
-			List<Person> kids = new ArrayList<>();
-			kids.add(p4);
-			kids.add(p5);
-			p1.setSpouse(p3);
-			p1.setKids(kids);
-
-			p3.setKids(kids);
-
 			persons.add(p1);
 			persons.add(p2);
 			persons.add(p3);
@@ -50,8 +42,6 @@ public class JpaExampleApplication  {
 		System.out.println("5. findAll persons ByBirthDate");
 		System.out.println("6. findAll persons ByMonth");
 		System.out.println("7. setName of person ById");
-		System.out.println("8. findAll single female");
-		System.out.println("9. findAll parents");
 		Scanner choice = new Scanner(System.in);
 		System.out.println("enter your choice: (exit press -1)");
 		int input = choice.nextInt();
@@ -64,7 +54,7 @@ public class JpaExampleApplication  {
 					findAllPersons(em);
 					break;
 				case 3 :
-					findById(em, 100L);
+					findById(em, 1L);
 					break;
 				case 4 :
 					findByName(em, "Maayan");
@@ -78,12 +68,6 @@ public class JpaExampleApplication  {
 					break;
 				case 7 :
 					setNameById(em, 1L, "MyNewName");
-					break;
-				case 8 :
-					findAllSingleByGender(em, Person.Gender.FEMALE);
-					break;
-				case 9 :
-					findAllParents(em);
 					break;
 				default:
 					System.out.println("!!!please insert a valid choice!!!");
@@ -160,28 +144,5 @@ public class JpaExampleApplication  {
 			foundP.setName(newName);
 			System.out.println(foundP);
 		}
-	}
-
-	private static List<Person> findAllSingleByGender(EntityManager em, Person.Gender gender) {
-		List<Person> persons;
-		Query q = em.createQuery("Select p from Person p where p.spouse is null and gender=:gender");
-		q.setParameter("gender", gender);
-		persons = q.getResultList();
-		for(Person p : persons) {
-			System.out.println(p);
-		}
-
-		return persons;
-	}
-
-	private static List<Person> findAllParents(EntityManager em) {
-		List<Person> persons;
-		Query q = em.createQuery("Select p from Person p where p.kids is not empty");
-		persons = q.getResultList();
-		for(Person p : persons) {
-			System.out.println(p);
-		}
-
-		return persons;
 	}
 }
